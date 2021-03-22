@@ -7,21 +7,22 @@ const User = require("../models/user");
 
 // get ------------------
 // get all pangolins
-UserRouter.get("/", (req, res) => {
-  User.find({}).then(result => {
-    console.log("result", result);
-    res.json(result);
-  });
-});
+UserRouter.get("/", (req, res) =>
+  User.find({}).then(result => res.json(result))
+);
 
 // get all friends
-UserRouter.get("/all", (req, res) => {
-  res.send("get all pangolins friend");
+UserRouter.get("/:id/all", (req, res) => {
+  User.findById(req.params.id)
+    .then(user => res.json(user.friends))
+    .catch(err => err);
 });
 
 // get specific pangolins
 UserRouter.get("/:id", (req, res) => {
-  res.send("get specific pangolin n°" + req.params.id);
+  User.findById(req.params.id)
+    .then(user => res.json(user))
+    .catch(err => err);
 });
 
 // post------------------
@@ -84,43 +85,87 @@ UserRouter.post("/", (req, res) => {
       connected: false,
     });
 
-    newUser.save().then(result => {
-      console.log("add", result);
-      res.send("user added");
-    });
+    newUser.save().then(() => res.send("user added"));
   }
 });
 
 // put-------------------
 // set pangolin connected
-UserRouter.put("/connect", (req, res) => {
-  res.send("pangolin is connected now");
+UserRouter.put("/:id/connect", (req, res) => {
+  User.findById(req.params.id).then(user => {
+    user.connected = true;
+    user.save();
+    if (user.connected) {
+      res.send("pangolin is connected now");
+    } else {
+      res.send("pangolin is not connected");
+    }
+  });
 });
 
 // set pangolin disconnected
-UserRouter.put("/disconnect", (req, res) => {
-  res.send("pangolin is disconnected now");
+UserRouter.put("/:id/disconnect", (req, res) => {
+  User.findById(req.params.id).then(user => {
+    user.connected = false;
+    user.save();
+    if (user.connected) {
+      res.send("pangolin is connected now");
+    } else {
+      res.send("pangolin is not connected");
+    }
+  });
 });
 
 // modify a pangolin details
-UserRouter.put("/details", (req, res) => {
-  res.send("details was modified");
+UserRouter.put("/:id/details", (req, res) => {
+  User.findById(req.params.id).then(user => {
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.mail) {
+      user.mail = req.body.mail;
+    }
+    if (req.body.age) {
+      user.age = req.body.age;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    if (req.body.family) {
+      user.family = req.body.family;
+    }
+    if (req.body.race) {
+      user.race = req.body.race;
+    }
+    if (req.body.feed) {
+      user.feed = req.body.feed;
+    }
+
+    user.save().then(() => {
+      res.send("User's details was modified");
+    });
+  });
 });
 
 // add a pangolin to friends
 UserRouter.put("/:id/add", (req, res) => {
-  res.send("pangolin is now friend with n°" + req.params.id);
+  User.findById(req.params.id).then(user => {
+    user.friends.push(req.body.id);
+    user.save().then(res.json(user));
+  });
 });
 
 // remove a pangolin from friends
 UserRouter.put("/:id/remove", (req, res) => {
-  res.send("pangolin is NOT longer friend with n°" + req.params.id);
-});
-
-// delete----------------
-// remove a pangolin definitively
-UserRouter.delete("/:id", (req, res) => {
-  res.send("Pangolin n°" + req.params.id + " was deleted");
+  User.findById(req.params.id).then(user => {
+    let { friends } = user;
+    const index = friends.indexOf(req.body.id);
+    if (index > -1) {
+      friends.splice(index, 1);
+      user.save();
+    }
+    res.json(user);
+  });
 });
 
 module.exports = UserRouter;
