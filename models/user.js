@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: { type: String, required: true },
   mail: { type: String, required: true },
   age: { type: Number },
+  password: { type: String },
   family: { type: String, required: true },
   race: { type: String, required: true },
   feed: { type: String, required: true },
@@ -14,4 +15,4 @@ const UserSchema = new Schema({
 
 let users = mongoose.model("user", UserSchema);
 
-export { users };
+module.exports = users;
