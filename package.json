@@ -1,7 +1,7 @@
 {
-  "name": "tk-node-starter",
+  "name": "Pangolin-API",
   "version": "1.0.2",
-  "description": "a starter template for an Express project",
+  "description": "a api for pangolin managing",
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --coverage ",

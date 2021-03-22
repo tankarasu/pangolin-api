@@ -12,4 +12,12 @@ UserRouter.route("/")
   .delete(() => {});
 */
 
+// get 
+
+// post
+
+// put 
+
+// delete
+
 export { UserRouter };

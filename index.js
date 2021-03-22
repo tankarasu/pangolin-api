@@ -3,7 +3,7 @@ require("dotenv").config();
 
 // variables globales
 import { UserRouter } from "./routes/UserRouter";
-let {PORT,USER,PASSWORD,DB_NAME} = process.env
+let { PORT, USER, PASSWORD, DB_NAME } = process.env;
 const port = PORT || 3030;
 
 // required import
