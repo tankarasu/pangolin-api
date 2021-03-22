@@ -2,20 +2,20 @@
 require("dotenv").config();
 
 // variables globales
-import { UserRouter } from "./routes/UserRouter";
-let { PORT, USER, PASSWORD, DB_NAME } = process.env;
+const UserRouter = require("./routes/UserRouter");
+let { PORT, PASSWORD, DB_NAME } = process.env;
 const port = PORT || 3030;
 
 // required import
-import express from "express";
+const express = require("express");
 const app = express();
 let morgan = require("morgan");
-import cors from "cors";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 // initialize DB
-const URI = `mongodb+srv://${USER}:${PASSWORD}@${USER}.mmpal.mongodb.net/${DB_NAME}`;
+const URI = `mongodb+srv://tankarasu:${PASSWORD}@tankarasu.mmpal.mongodb.net/${DB_NAME}`;
 const db = mongoose.connection;
 
 mongoose.connect(URI, {

@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   race: { type: String, required: true },
   feed: { type: String, required: true },
   friends: { type: Array },
+  connected: { type: Boolean },
 });
 
 let users = mongoose.model("user", UserSchema);
