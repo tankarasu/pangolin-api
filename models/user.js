@@ -2,8 +2,13 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  name: String,
-  mail: String,
+  name: { type: String, required: true },
+  mail: { type: String, required: true },
+  age: { type: Number },
+  family: { type: String, required: true },
+  race: { type: String, required: true },
+  feed: { type: String, required: true },
+  friends: { type: Array },
 });
 
 let users = mongoose.model("user", UserSchema);
